@@ -18,3 +18,4 @@ Thumbs.db
 
 # sublime phpintel plugin
 /.phpintel
+/composer.lock
