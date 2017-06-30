@@ -107,4 +107,6 @@ return [
     |
     */
     'permission_foreign_key' => 'permission_id',
+
+    'cache_ttl' => null,
 ];
