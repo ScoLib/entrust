@@ -71,8 +71,7 @@ trait EntrustUserTrait
         parent::boot();
 
         static::deleting(function($user) {
-            $provider = Config::get('entrust.provider');
-            if (!method_exists(Config::get("auth.providers.{$provider}.model"), 'bootSoftDeletes')) {
+            if (!method_exists(Config::get('auth.providers.users.model'), 'bootSoftDeletes')) {
                 $user->roles()->sync([]);
             }
 
