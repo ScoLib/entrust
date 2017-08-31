@@ -1,7 +1,7 @@
 <?php
 
-use Zizaco\Entrust\Middleware\EntrustRole;
 use Mockery as m;
+use Zizaco\Entrust\Middleware\EntrustRole;
 
 class EntrustRoleTest extends MiddlewareTest
 {
@@ -25,7 +25,8 @@ class EntrustRoleTest extends MiddlewareTest
         $guard->shouldReceive('guest')->andReturn(true);
         $request->user()->shouldReceive('hasRole')->andReturn(false);
 
-        $middleware->handle($request, function () {}, null, null, true);
+        $middleware->handle($request, function () {
+        }, null, null, true);
 
         /*
         |------------------------------------------------------------
@@ -55,7 +56,8 @@ class EntrustRoleTest extends MiddlewareTest
         $guard->shouldReceive('guest')->andReturn(true);
         $request->user()->shouldReceive('hasRole')->andReturn(true);
 
-        $middleware->handle($request, function () {}, null, null);
+        $middleware->handle($request, function () {
+        }, null, null);
 
         /*
         |------------------------------------------------------------
@@ -85,7 +87,8 @@ class EntrustRoleTest extends MiddlewareTest
         $guard->shouldReceive('guest')->andReturn(false);
         $request->user()->shouldReceive('hasRole')->andReturn(false);
 
-        $middleware->handle($request, function () {}, null, null);
+        $middleware->handle($request, function () {
+        }, null, null);
 
         /*
         |------------------------------------------------------------
@@ -115,7 +118,8 @@ class EntrustRoleTest extends MiddlewareTest
         $guard->shouldReceive('guest')->andReturn(false);
         $request->user()->shouldReceive('hasRole')->andReturn(true);
 
-        $middleware->handle($request, function () {}, null, null);
+        $middleware->handle($request, function () {
+        }, null, null);
 
         /*
         |------------------------------------------------------------

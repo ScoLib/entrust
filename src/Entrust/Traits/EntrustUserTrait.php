@@ -2,7 +2,7 @@
 
 namespace Zizaco\Entrust\Traits;
 
-/**
+/*
  * This file is part of Entrust,
  * a role & permission management solution for Laravel.
  *
@@ -21,7 +21,7 @@ trait EntrustUserTrait
     public function cachedRoles()
     {
         $userPrimaryKey = $this->primaryKey;
-        $cacheKey       = 'entrust_roles_for_user_' . $this->$userPrimaryKey;
+        $cacheKey = 'entrust_roles_for_user_'.$this->$userPrimaryKey;
         if (Cache::getStore() instanceof TaggableStore) {
             return Cache::tags(Config::get('entrust.role_user_table'))->remember($cacheKey,
                 Config::get('entrust.cache_ttl', 60), function () {
@@ -38,6 +38,7 @@ trait EntrustUserTrait
         if (Cache::getStore() instanceof TaggableStore) {
             Cache::tags(Config::get('entrust.role_user_table'))->flush();
         }
+
         return parent::save($options);
     }
 
@@ -179,6 +180,7 @@ trait EntrustUserTrait
      *                                  (boolean|array|both)
      *
      * @throws \InvalidArgumentException
+     *
      * @return array|bool
      */
     public function ability($roles, $permissions, $options = [])
@@ -210,7 +212,7 @@ trait EntrustUserTrait
         }
 
         // Loop through roles and permissions and check each.
-        $checkedRoles       = [];
+        $checkedRoles = [];
         $checkedPermissions = [];
         foreach ($roles as $role) {
             $checkedRoles[$role] = $this->hasRole($role);
@@ -242,7 +244,6 @@ trait EntrustUserTrait
                 ['roles' => $checkedRoles, 'permissions' => $checkedPermissions],
             ];
         }
-
     }
 
     /**
@@ -282,7 +283,7 @@ trait EntrustUserTrait
     }
 
     /**
-     * Attach multiple roles to a user
+     * Attach multiple roles to a user.
      *
      * @param mixed $roles
      */
@@ -294,7 +295,7 @@ trait EntrustUserTrait
     }
 
     /**
-     * Detach multiple roles from a user
+     * Detach multiple roles from a user.
      *
      * @param mixed $roles
      */
@@ -308,5 +309,4 @@ trait EntrustUserTrait
             $this->detachRole($role);
         }
     }
-
 }

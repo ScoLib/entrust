@@ -1,6 +1,8 @@
-<?php namespace Zizaco\Entrust\Traits;
+<?php
 
-/**
+namespace Zizaco\Entrust\Traits;
+
+/*
  * This file is part of Entrust,
  * a role & permission management solution for Laravel.
  *
@@ -33,7 +35,7 @@ trait EntrustPermissionTrait
     {
         parent::boot();
 
-        static::deleting(function($permission) {
+        static::deleting(function ($permission) {
             if (!method_exists(Config::get('entrust.permission'), 'bootSoftDeletes')) {
                 $permission->roles()->sync([]);
             }

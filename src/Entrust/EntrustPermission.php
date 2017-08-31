@@ -1,6 +1,8 @@
-<?php namespace Zizaco\Entrust;
+<?php
 
-/**
+namespace Zizaco\Entrust;
+
+/*
  * This file is part of Entrust,
  * a role & permission management solution for Laravel.
  *
@@ -8,10 +10,10 @@
  * @package Zizaco\Entrust
  */
 
-use Zizaco\Entrust\Contracts\EntrustPermissionInterface;
-use Zizaco\Entrust\Traits\EntrustPermissionTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
+use Zizaco\Entrust\Contracts\EntrustPermissionInterface;
+use Zizaco\Entrust\Traits\EntrustPermissionTrait;
 
 class EntrustPermission extends Model implements EntrustPermissionInterface
 {
@@ -34,5 +36,4 @@ class EntrustPermission extends Model implements EntrustPermissionInterface
         parent::__construct($attributes);
         $this->table = Config::get('entrust.permissions_table');
     }
-
 }

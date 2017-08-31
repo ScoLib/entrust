@@ -1,6 +1,8 @@
-<?php namespace Zizaco\Entrust\Traits;
+<?php
 
-/**
+namespace Zizaco\Entrust\Traits;
+
+/*
  * This file is part of Entrust,
  * a role & permission management solution for Laravel.
  *
@@ -9,8 +11,8 @@
  */
 
 use Illuminate\Cache\TaggableStore;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 
 trait EntrustRoleTrait
 {
@@ -18,12 +20,14 @@ trait EntrustRoleTrait
     public function cachedPermissions()
     {
         $rolePrimaryKey = $this->primaryKey;
-        $cacheKey = 'entrust_permissions_for_role_' . $this->$rolePrimaryKey;
+        $cacheKey = 'entrust_permissions_for_role_'.$this->$rolePrimaryKey;
         if (Cache::getStore() instanceof TaggableStore) {
             return Cache::tags(Config::get('entrust.permission_role_table'))->remember($cacheKey, Config::get('entrust.cache_ttl', 60), function () {
                 return $this->perms()->get();
             });
-        } else return $this->perms()->get();
+        } else {
+            return $this->perms()->get();
+        }
     }
 
     public function save(array $options = [])
@@ -34,6 +38,7 @@ trait EntrustRoleTrait
         if (Cache::getStore() instanceof TaggableStore) {
             Cache::tags(Config::get('entrust.permission_role_table'))->flush();
         }
+
         return true;
     }
 
@@ -45,6 +50,7 @@ trait EntrustRoleTrait
         if (Cache::getStore() instanceof TaggableStore) {
             Cache::tags(Config::get('entrust.permission_role_table'))->flush();
         }
+
         return true;
     }
 
@@ -56,6 +62,7 @@ trait EntrustRoleTrait
         if (Cache::getStore() instanceof TaggableStore) {
             Cache::tags(Config::get('entrust.permission_role_table'))->flush();
         }
+
         return true;
     }
 
@@ -104,8 +111,8 @@ trait EntrustRoleTrait
     /**
      * Checks if the role has a permission by its name.
      *
-     * @param string|array $name Permission name or array of permission names.
-     * @param bool $requireAll All permissions in the array are required.
+     * @param string|array $name       Permission name or array of permission names.
+     * @param bool         $requireAll All permissions in the array are required.
      *
      * @return bool
      */
@@ -212,7 +219,7 @@ trait EntrustRoleTrait
     }
 
     /**
-     * Detach multiple permissions from current role
+     * Detach multiple permissions from current role.
      *
      * @param mixed $permissions
      *
@@ -220,7 +227,9 @@ trait EntrustRoleTrait
      */
     public function detachPermissions($permissions = null)
     {
-        if (!$permissions) $permissions = $this->perms()->get();
+        if (!$permissions) {
+            $permissions = $this->perms()->get();
+        }
 
         foreach ($permissions as $permission) {
             $this->detachPermission($permission);
