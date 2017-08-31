@@ -1,17 +1,17 @@
 <?php
 
-use Zizaco\Entrust\Contracts\EntrustUserInterface;
-use Zizaco\Entrust\Traits\EntrustUserTrait;
 use Illuminate\Cache\ArrayStore;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
+use Mockery as m;
+use Zizaco\Entrust\Contracts\EntrustUserInterface;
 use Zizaco\Entrust\Permission;
 use Zizaco\Entrust\Role;
-use Mockery as m;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class EntrustUserTest extends \PHPUnit\Framework\TestCase
 {
-    private $facadeMocks = array();
+    private $facadeMocks = [];
 
     public function setUp()
     {
@@ -92,7 +92,7 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
         Config::shouldReceive('get')->with('entrust.role_user_table')->times(9)->andReturn('role_user');
         Config::shouldReceive('get')->with('entrust.cache_ttl', 60)->times(9)->andReturn('60');
         Cache::shouldReceive('tags->remember')->times(9)->andReturn($user->roles);
-        Cache::shouldReceive('getStore')->times(9)->andReturn(new ArrayStore);
+        Cache::shouldReceive('getStore')->times(9)->andReturn(new ArrayStore());
 
         /*
         |------------------------------------------------------------
@@ -139,7 +139,7 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
         Config::shouldReceive('get')->with('entrust.role_user_table')->times(11)->andReturn('role_user');
         Config::shouldReceive('get')->with('entrust.cache_ttl', 60)->times(11)->andReturn(60);
         Cache::shouldReceive('tags->remember')->times(11)->andReturn($user->roles);
-        Cache::shouldReceive('getStore')->times(11)->andReturn(new ArrayStore);
+        Cache::shouldReceive('getStore')->times(11)->andReturn(new ArrayStore());
 
         /*
         |------------------------------------------------------------
@@ -157,8 +157,7 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($user->can(['manage_d', 'manage_e']));
     }
 
-
-    public function testCanWithPlaceholderSupport ()
+    public function testCanWithPlaceholderSupport()
     {
         /*
         |------------------------------------------------------------
@@ -185,7 +184,7 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
         Config::shouldReceive('get')->with('entrust.role_user_table')->times(6)->andReturn('role_user');
         Config::shouldReceive('get')->with('entrust.cache_ttl', 60)->times(6)->andReturn(60);
         Cache::shouldReceive('tags->remember')->times(6)->andReturn($user->roles);
-        Cache::shouldReceive('getStore')->times(6)->andReturn(new ArrayStore);
+        Cache::shouldReceive('getStore')->times(6)->andReturn(new ArrayStore());
 
         /*
         |------------------------------------------------------------
@@ -200,7 +199,6 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($user->can(['admin.*']));
         $this->assertFalse($user->can(['site.*']));
     }
-
 
     public function testAbilityShouldReturnBoolean()
     {
@@ -244,7 +242,7 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
         Config::shouldReceive('get')->with('entrust.role_user_table')->times(32)->andReturn('role_user');
         Config::shouldReceive('get')->with('entrust.cache_ttl', 60)->times(32)->andReturn(60);
         Cache::shouldReceive('tags->remember')->times(32)->andReturn($user->roles);
-        Cache::shouldReceive('getStore')->times(32)->andReturn(new ArrayStore);
+        Cache::shouldReceive('getStore')->times(32)->andReturn(new ArrayStore());
 
         $user->shouldReceive('hasRole')
             ->with(m::anyOf($userRoleNameA, $userRoleNameB), m::anyOf(true, false))
@@ -357,7 +355,6 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
         $user->id = 4;
         $user->primaryKey = 'id';
 
-
         /*
         |------------------------------------------------------------
         | Expectation
@@ -368,7 +365,7 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
         Config::shouldReceive('get')->with('entrust.role_user_table')->times(32)->andReturn('role_user');
         Config::shouldReceive('get')->with('entrust.cache_ttl', 60)->times(32)->andReturn('60');
         Cache::shouldReceive('tags->remember')->times(32)->andReturn($user->roles);
-        Cache::shouldReceive('getStore')->times(32)->andReturn(new ArrayStore);
+        Cache::shouldReceive('getStore')->times(32)->andReturn(new ArrayStore());
 
         $user->shouldReceive('hasRole')
             ->with(m::anyOf($userRoleNameA, $userRoleNameB), m::anyOf(true, false))
@@ -392,7 +389,7 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(
             [
                 'roles'       => [$userRoleNameA => true, $userRoleNameB => true],
-                'permissions' => [$userPermNameA => true, $userPermNameB => true]
+                'permissions' => [$userPermNameA => true, $userPermNameB => true],
             ],
             $user->ability(
                 [$userRoleNameA, $userRoleNameB],
@@ -403,7 +400,7 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(
             [
                 'roles'       => [$userRoleNameA => true, $userRoleNameB => true],
-                'permissions' => [$userPermNameA => true, $userPermNameB => true]
+                'permissions' => [$userPermNameA => true, $userPermNameB => true],
             ],
             $user->ability(
                 [$userRoleNameA, $userRoleNameB],
@@ -411,13 +408,12 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
                 ['validate_all' => true, 'return_type' => 'array']
             )
         );
-
 
         // Case: User lacks a role.
         $this->assertSame(
             [
                 'roles'       => [$nonUserRoleNameA => false, $userRoleNameB => true],
-                'permissions' => [$userPermNameA    => true, $userPermNameB  => true]
+                'permissions' => [$userPermNameA    => true, $userPermNameB  => true],
             ],
             $user->ability(
                 [$nonUserRoleNameA, $userRoleNameB],
@@ -428,7 +424,7 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(
             [
                 'roles'       => [$nonUserRoleNameA => false, $userRoleNameB => true],
-                'permissions' => [$userPermNameA    => true, $userPermNameB  => true]
+                'permissions' => [$userPermNameA    => true, $userPermNameB  => true],
             ],
             $user->ability(
                 [$nonUserRoleNameA, $userRoleNameB],
@@ -437,12 +433,11 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
             )
         );
 
-
         // Case: User lacks a permission.
         $this->assertSame(
             [
                 'roles'       => [$userRoleNameA    => true, $userRoleNameB  => true],
-                'permissions' => [$nonUserPermNameA => false, $userPermNameB => true]
+                'permissions' => [$nonUserPermNameA => false, $userPermNameB => true],
             ],
             $user->ability(
                 [$userRoleNameA, $userRoleNameB],
@@ -453,7 +448,7 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(
             [
                 'roles'       => [$userRoleNameA    => true, $userRoleNameB  => true],
-                'permissions' => [$nonUserPermNameA => false, $userPermNameB => true]
+                'permissions' => [$nonUserPermNameA => false, $userPermNameB => true],
             ],
             $user->ability(
                 [$userRoleNameA, $userRoleNameB],
@@ -462,12 +457,11 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
             )
         );
 
-
         // Case: User lacks everything.
         $this->assertSame(
             [
                 'roles'       => [$nonUserRoleNameA => false, $nonUserRoleNameB => false],
-                'permissions' => [$nonUserPermNameA => false, $nonUserPermNameB => false]
+                'permissions' => [$nonUserPermNameA => false, $nonUserPermNameB => false],
             ],
             $user->ability(
                 [$nonUserRoleNameA, $nonUserRoleNameB],
@@ -478,7 +472,7 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(
             [
                 'roles'       => [$nonUserRoleNameA => false, $nonUserRoleNameB => false],
-                'permissions' => [$nonUserPermNameA => false, $nonUserPermNameB => false]
+                'permissions' => [$nonUserPermNameA => false, $nonUserPermNameB => false],
             ],
             $user->ability(
                 [$nonUserRoleNameA, $nonUserRoleNameB],
@@ -530,7 +524,7 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
         Config::shouldReceive('get')->with('entrust.role_user_table')->times(32)->andReturn('role_user');
         Config::shouldReceive('get')->with('entrust.cache_ttl', 60)->times(32)->andReturn('60');
         Cache::shouldReceive('tags->remember')->times(32)->andReturn($user->roles);
-        Cache::shouldReceive('getStore')->times(32)->andReturn(new ArrayStore);
+        Cache::shouldReceive('getStore')->times(32)->andReturn(new ArrayStore());
 
         $user->shouldReceive('hasRole')
             ->with(m::anyOf($userRoleNameA, $userRoleNameB), m::anyOf(true, false))
@@ -556,8 +550,8 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
                 true,
                 [
                     'roles'       => [$userRoleNameA => true, $userRoleNameB => true],
-                    'permissions' => [$userPermNameA => true, $userPermNameB => true]
-                ]
+                    'permissions' => [$userPermNameA => true, $userPermNameB => true],
+                ],
             ],
             $user->ability(
                 [$userRoleNameA, $userRoleNameB],
@@ -570,8 +564,8 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
                 true,
                 [
                     'roles'       => [$userRoleNameA => true, $userRoleNameB => true],
-                    'permissions' => [$userPermNameA => true, $userPermNameB => true]
-                ]
+                    'permissions' => [$userPermNameA => true, $userPermNameB => true],
+                ],
             ],
             $user->ability(
                 [$userRoleNameA, $userRoleNameB],
@@ -579,7 +573,6 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
                 ['validate_all' => true, 'return_type' => 'both']
             )
         );
-
 
         // Case: User lacks a role.
         $this->assertSame(
@@ -587,8 +580,8 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
                 true,
                 [
                     'roles'       => [$nonUserRoleNameA => false, $userRoleNameB => true],
-                    'permissions' => [$userPermNameA    => true, $userPermNameB  => true]
-                ]
+                    'permissions' => [$userPermNameA    => true, $userPermNameB  => true],
+                ],
             ],
             $user->ability(
                 [$nonUserRoleNameA, $userRoleNameB],
@@ -601,8 +594,8 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
                 false,
                 [
                     'roles'       => [$nonUserRoleNameA => false, $userRoleNameB => true],
-                    'permissions' => [$userPermNameA    => true, $userPermNameB  => true]
-                ]
+                    'permissions' => [$userPermNameA    => true, $userPermNameB  => true],
+                ],
             ],
             $user->ability(
                 [$nonUserRoleNameA, $userRoleNameB],
@@ -611,15 +604,14 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
             )
         );
 
-
         // Case: User lacks a permission.
         $this->assertSame(
             [
                 true,
                 [
                     'roles'       => [$userRoleNameA    => true, $userRoleNameB  => true],
-                    'permissions' => [$nonUserPermNameA => false, $userPermNameB => true]
-                ]
+                    'permissions' => [$nonUserPermNameA => false, $userPermNameB => true],
+                ],
             ],
             $user->ability(
                 [$userRoleNameA, $userRoleNameB],
@@ -632,8 +624,8 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
                 false,
                 [
                     'roles'       => [$userRoleNameA    => true, $userRoleNameB  => true],
-                    'permissions' => [$nonUserPermNameA => false, $userPermNameB => true]
-                ]
+                    'permissions' => [$nonUserPermNameA => false, $userPermNameB => true],
+                ],
             ],
             $user->ability(
                 [$userRoleNameA, $userRoleNameB],
@@ -642,15 +634,14 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
             )
         );
 
-
         // Case: User lacks everything.
         $this->assertSame(
             [
                 false,
                 [
                     'roles'       => [$nonUserRoleNameA => false, $nonUserRoleNameB => false],
-                    'permissions' => [$nonUserPermNameA => false, $nonUserPermNameB => false]
-                ]
+                    'permissions' => [$nonUserPermNameA => false, $nonUserPermNameB => false],
+                ],
             ],
             $user->ability(
                 [$nonUserRoleNameA, $nonUserRoleNameB],
@@ -663,8 +654,8 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
                 false,
                 [
                     'roles'       => [$nonUserRoleNameA => false, $nonUserRoleNameB => false],
-                    'permissions' => [$nonUserPermNameA => false, $nonUserPermNameB => false]
-                ]
+                    'permissions' => [$nonUserPermNameA => false, $nonUserPermNameB => false],
+                ],
             ],
             $user->ability(
                 [$nonUserRoleNameA, $nonUserRoleNameB],
@@ -706,7 +697,7 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
         Config::shouldReceive('get')->with('entrust.role_user_table')->times(8)->andReturn('role_user');
         Config::shouldReceive('get')->with('entrust.cache_ttl', 60)->times(8)->andReturn('60');
         Cache::shouldReceive('tags->remember')->times(8)->andReturn($user->roles);
-        Cache::shouldReceive('getStore')->times(8)->andReturn(new ArrayStore);
+        Cache::shouldReceive('getStore')->times(8)->andReturn(new ArrayStore());
 
         $user->shouldReceive('hasRole')
             ->with(m::anyOf('UserRoleA', 'UserRoleB'), m::anyOf(true, false))
@@ -782,7 +773,7 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
         Config::shouldReceive('get')->with('entrust.role_user_table')->times(32)->andReturn('role_user');
         Config::shouldReceive('get')->with('entrust.cache_ttl', 60)->times(32)->andReturn(60);
         Cache::shouldReceive('tags->remember')->times(32)->andReturn($user->roles);
-        Cache::shouldReceive('getStore')->times(32)->andReturn(new ArrayStore);
+        Cache::shouldReceive('getStore')->times(32)->andReturn(new ArrayStore());
 
         $user->shouldReceive('hasRole')
             ->with(m::anyOf($userRoleNameA, $userRoleNameB), m::anyOf(true, false))
@@ -815,7 +806,6 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
             )
         );
 
-
         // Case: User lacks a role.
         $this->assertSame(
             $user->ability(
@@ -829,7 +819,6 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
             )
         );
 
-
         // Case: User lacks a permission.
         $this->assertSame(
             $user->ability(
@@ -842,7 +831,6 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
                 ['validate_all' => false, 'return_type' => 'boolean']
             )
         );
-
 
         // Case: User lacks everything.
         $this->assertSame(
@@ -987,7 +975,6 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
             ->with(3)
             ->once()->ordered();
 
-
         /*
         |------------------------------------------------------------
         | Assertion
@@ -1101,7 +1088,6 @@ class EntrustUserTest extends \PHPUnit\Framework\TestCase
         |------------------------------------------------------------
         */
         $user->detachRoles();
-
     }
 
     protected function mockPermission($permName)
@@ -1134,13 +1120,13 @@ class HasRoleUser implements EntrustUserInterface
     public $primaryKey;
     public $id;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->primaryKey = 'id';
         $this->id = 4;
     }
 
     public function belongsToMany($role, $assignedRolesTable)
     {
-
     }
 }

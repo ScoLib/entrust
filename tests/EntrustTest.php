@@ -1,8 +1,7 @@
 <?php
 
-use Zizaco\Entrust\Entrust;
-use Illuminate\Support\Facades\Facade;
 use Mockery as m;
+use Zizaco\Entrust\Entrust;
 
 class EntrustTest extends \PHPUnit\Framework\TestCase
 {
@@ -14,7 +13,7 @@ class EntrustTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        $this->nullFilterTest = function($filterClosure) {
+        $this->nullFilterTest = function ($filterClosure) {
             if (!($filterClosure instanceof Closure)) {
                 return false;
             }
@@ -24,7 +23,7 @@ class EntrustTest extends \PHPUnit\Framework\TestCase
             return true;
         };
 
-        $this->abortFilterTest = function($filterClosure) {
+        $this->abortFilterTest = function ($filterClosure) {
             if (!($filterClosure instanceof Closure)) {
                 return false;
             }
@@ -41,7 +40,7 @@ class EntrustTest extends \PHPUnit\Framework\TestCase
             return false;
         };
 
-        $this->customResponseFilterTest = function($filterClosure) {
+        $this->customResponseFilterTest = function ($filterClosure) {
             if (!($filterClosure instanceof Closure)) {
                 return false;
             }
@@ -191,7 +190,7 @@ class EntrustTest extends \PHPUnit\Framework\TestCase
         $oneRole = 'RoleA';
         $manyRole = ['RoleA', 'RoleB', 'RoleC'];
 
-        $oneRoleFilterName  = $this->makeFilterName($route, [$oneRole]);
+        $oneRoleFilterName = $this->makeFilterName($route, [$oneRole]);
         $manyRoleFilterName = $this->makeFilterName($route, $manyRole);
 
         /*
@@ -326,7 +325,7 @@ class EntrustTest extends \PHPUnit\Framework\TestCase
             // Filter fails, App::abort() is called
             [false, 'abortFilterTest', true],
             // Filter fails, custom response is returned
-            [false, 'customResponseFilterTest', false, new stdClass()]
+            [false, 'customResponseFilterTest', false, new stdClass()],
         ];
     }
 
@@ -349,14 +348,14 @@ class EntrustTest extends \PHPUnit\Framework\TestCase
     protected function filterTestExecution($methodTested, $mockedMethod, $returnValue, $filterTest, $abort, $expectedResponse)
     {
         // Mock Objects
-        $app         = m::mock('Illuminate\Foundation\Application');
+        $app = m::mock('Illuminate\Foundation\Application');
         $app->router = m::mock('Route');
-        $entrust     = m::mock("Zizaco\Entrust\Entrust[$mockedMethod]", [$app]);
+        $entrust = m::mock("Zizaco\Entrust\Entrust[$mockedMethod]", [$app]);
 
         // Static values
-        $route       = 'route';
+        $route = 'route';
         $methodValue = 'role-or-permission';
-        $filterName  = $this->makeFilterName($route, [$methodValue]);
+        $filterName = $this->makeFilterName($route, [$methodValue]);
 
         $app->router->shouldReceive('when')->with($route, $filterName)->once();
         $app->router->shouldReceive('filter')->with($filterName, m::on($this->$filterTest))->once();
@@ -389,7 +388,7 @@ class EntrustTest extends \PHPUnit\Framework\TestCase
             [false, true,  'customResponseFilterTest', true,  false, new stdClass()],
             [true,  false, 'customResponseFilterTest', true,  false, new stdClass()],
             [false, false, 'customResponseFilterTest', false, false, new stdClass()],
-            [false, false, 'customResponseFilterTest', true,  false, new stdClass()]
+            [false, false, 'customResponseFilterTest', true,  false, new stdClass()],
         ];
     }
 
@@ -399,14 +398,14 @@ class EntrustTest extends \PHPUnit\Framework\TestCase
     public function testFilterGeneratedByRouteNeedsRoleOrPermission(
         $roleIsValid, $permIsValid, $filterTest, $requireAll = false, $abort = false, $expectedResponse = null
     ) {
-        $app         = m::mock('Illuminate\Foundation\Application');
+        $app = m::mock('Illuminate\Foundation\Application');
         $app->router = m::mock('Route');
-        $entrust     = m::mock('Zizaco\Entrust\Entrust[hasRole, can]', [$app]);
+        $entrust = m::mock('Zizaco\Entrust\Entrust[hasRole, can]', [$app]);
 
         // Static values
-        $route      = 'route';
-        $roleName   = 'UserRole';
-        $permName   = 'user-permission';
+        $route = 'route';
+        $roleName = 'UserRole';
+        $permName = 'user-permission';
         $filterName = $this->makeFilterName($route, [$roleName], [$permName]);
 
         $app->router->shouldReceive('when')->with($route, $filterName)->once();
@@ -427,9 +426,9 @@ class EntrustTest extends \PHPUnit\Framework\TestCase
     protected function makeFilterName($route, array $roles, array $permissions = null)
     {
         if (is_null($permissions)) {
-            return implode('_', $roles) . '_' . substr(md5($route), 0, 6);
+            return implode('_', $roles).'_'.substr(md5($route), 0, 6);
         } else {
-            return implode('_', $roles) . '_' . implode('_', $permissions) . '_' . substr(md5($route), 0, 6);
+            return implode('_', $roles).'_'.implode('_', $permissions).'_'.substr(md5($route), 0, 6);
         }
     }
 }

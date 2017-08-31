@@ -1,13 +1,13 @@
-<?php namespace Zizaco\Entrust\Contracts;
+<?php
+
+namespace Zizaco\Entrust\Contracts;
 
 /**
  * This file is part of Entrust,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Zizaco\Entrust
  */
-
 interface EntrustUserInterface
 {
     /**
@@ -65,14 +65,14 @@ interface EntrustUserInterface
     public function detachRole($role);
 
     /**
-     * Attach multiple roles to a user
+     * Attach multiple roles to a user.
      *
      * @param mixed $roles
      */
     public function attachRoles($roles);
 
     /**
-     * Detach multiple roles from a user
+     * Detach multiple roles from a user.
      *
      * @param mixed $roles
      */
