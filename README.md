@@ -1,15 +1,14 @@
-# ENTRUST (Laravel 5 Package)
+# ENTRUST (Laravel 5.* Package)
 
-[![Build Status](https://travis-ci.org/Zizaco/entrust.svg)](https://travis-ci.org/Zizaco/entrust)
-[![Version](https://img.shields.io/packagist/v/Zizaco/entrust.svg)](https://packagist.org/packages/zizaco/entrust)
-[![License](https://poser.pugx.org/zizaco/entrust/license.svg)](https://packagist.org/packages/zizaco/entrust)
-[![Total Downloads](https://img.shields.io/packagist/dt/zizaco/entrust.svg)](https://packagist.org/packages/zizaco/entrust)
+[![StyleCI](https://styleci.io/repos/84023797/shield?branch=master)](https://styleci.io/repos/84023797)
+[![Build Status](https://travis-ci.org/ScoLib/entrust.svg)](https://travis-ci.org/ScoLib/entrust)
+[![Version](https://img.shields.io/packagist/v/scolib/entrust.svg)](https://packagist.org/packages/scolib/entrust)
+[![License](https://poser.pugx.org/scolib/entrust/license.svg)](https://packagist.org/packages/scolib/entrust)
+[![Total Downloads](https://img.shields.io/packagist/dt/scolib/entrust.svg)](https://packagist.org/packages/scolib/entrust)
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/cc4af966-809b-4fbc-b8b2-bb2850e6711e/small.png)](https://insight.sensiolabs.com/projects/cc4af966-809b-4fbc-b8b2-bb2850e6711e)
+Entrust is a succinct and flexible way to add Role-based Permissions to **Laravel 5.***.
 
-Entrust is a succinct and flexible way to add Role-based Permissions to **Laravel 5**.
-
-If you are looking for the Laravel 4 version, take a look [Branch 1.0](https://github.com/Zizaco/entrust/tree/1.0). It
+If you are looking for the Laravel 4 version, take a look [Branch 1.0](https://github.com/ScoLib/entrust/tree/1.0). It
 contains the latest entrust version for Laravel 4.
 
 ## Contents
@@ -37,38 +36,25 @@ contains the latest entrust version for Laravel 4.
 
 ## Installation
 
-1) In order to install Laravel 5 Entrust, just add the following to your composer.json. Then run `composer update`:
+1) In order to install Laravel 5.5 Entrust, just add the following to your composer.json. Then run `composer update`:
 
 ```json
-"zizaco/entrust": "5.2.x-dev"
+"scolib/entrust": "2.1.*"
 ```
 
-2) Open your `config/app.php` and add the following to the `providers` array:
-
-```php
-Zizaco\Entrust\EntrustServiceProvider::class,
-```
-
-3) In the same `config/app.php` and add the following to the `aliases ` array: 
-
-```php
-'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
-```
-
-4) Run the command below to publish the package config file `config/entrust.php`:
+2) Run the command below to publish the package config file `config/entrust.php`:
 
 ```shell
 php artisan vendor:publish
 ```
 
-5) Open your `config/auth.php` and add the following to it:
+3) Open your `config/auth.php` and add the following to it:
 
 ```php
 'providers' => [
     'users' => [
         'driver' => 'eloquent',
-        'model' => Namespace\Of\Your\User\Model\User::class,
-        'table' => 'users',
+        'model' => Namespace\Of\Your\User\Model\User::class
     ],
 ],
 ```
