@@ -26,7 +26,7 @@ abstract class MiddlewareTest extends \PHPUnit\Framework\TestCase
              */
             function abort($code, $message = '', array $headers = [])
             {
-                self::$abortCode = $code;
+                MiddlewareTest::$abortCode = $code;
             }
         }
     }
