@@ -35,7 +35,7 @@
         "phpunit/phpunit": "~6.0",
         "mockery/mockery": "dev-master",
         "illuminate/database": "5.5.*",
-        "sami/sami": "^4.0"
+        "sami/sami": "dev-master"
     },
     "autoload": {
         "classmap": [
