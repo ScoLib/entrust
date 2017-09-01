@@ -18,7 +18,6 @@ $versions = GitVersionCollection::create($dir)
     ->add('master', 'master branch');
 
 $options = [
-    'theme'                => 'symfony',
     'versions'             => $versions,
     'title'                => 'Entrust API',
     'build_dir'            => __DIR__.'/build/docs/%version%',
