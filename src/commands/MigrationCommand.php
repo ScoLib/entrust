@@ -11,7 +11,7 @@ namespace Zizaco\Entrust;
  */
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Config;
+use Config;
 
 class MigrationCommand extends Command
 {
@@ -52,7 +52,10 @@ class MigrationCommand extends Command
         $this->comment($message);
         $this->line('');
 
-        if ($this->confirm('Proceed with the migration creation? [Yes|no]', 'Yes')) {
+        if ($this->confirm(
+            'Proceed with the migration creation? [Yes|no]',
+            'Yes'
+        )) {
             $this->line('');
 
             $this->info('Creating migration...');
@@ -76,7 +79,12 @@ class MigrationCommand extends Command
      *
      * @return bool
      */
-    protected function createMigration($rolesTable, $roleUserTable, $permissionsTable, $permissionRoleTable)
+    protected function createMigration(
+        $rolesTable,
+        $roleUserTable,
+        $permissionsTable,
+        $permissionRoleTable
+    )
     {
         $migrationFile = base_path('/database/migrations').'/'.date('Y_m_d_His').'_entrust_setup_tables.php';
 
@@ -85,9 +93,21 @@ class MigrationCommand extends Command
         $usersTable = $userModel->getTable();
         $userKeyName = $userModel->getKeyName();
 
-        $data = compact('rolesTable', 'roleUserTable', 'permissionsTable', 'permissionRoleTable', 'usersTable', 'userKeyName');
+        $roleForeignKey = Config::get('entrust.role_foreign_key');
+        $userForeignKey = Config::get('entrust.user_foreign_key');
+        $permissionForeignKey = Config::get('entrust.permission_foreign_key');
 
-        $output = $this->laravel->view->make('entrust::generators.migration')->with($data)->render();
+
+        $data = compact(
+            'rolesTable', 'roleUserTable', 'permissionsTable',
+            'permissionRoleTable', 'usersTable', 'userKeyName', 'roleForeignKey',
+            'userForeignKey', 'permissionForeignKey'
+        );
+
+        $output = $this->laravel->view
+            ->make('entrust::generators.migration')
+            ->with($data)
+            ->render();
 
         if (!file_exists($migrationFile) && $fs = fopen($migrationFile, 'x')) {
             fwrite($fs, $output);

@@ -25,15 +25,15 @@ class EntrustSetupTables extends Migration
 
         // Create table for associating roles to users (Many-to-Many)
         Schema::create('{{ $roleUserTable }}', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned();
-            $table->integer('role_id')->unsigned();
+            $table->integer('{{ $userForeignKey }}')->unsigned();
+            $table->integer('{{ $roleForeignKey }}')->unsigned();
 
-            $table->foreign('user_id')->references('{{ $userKeyName }}')->on('{{ $usersTable }}')
+            $table->foreign('{{ $userForeignKey }}')->references('{{ $userKeyName }}')->on('{{ $usersTable }}')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('role_id')->references('id')->on('{{ $rolesTable }}')
+            $table->foreign('{{ $roleForeignKey }}')->references('id')->on('{{ $rolesTable }}')
                 ->onUpdate('cascade')->onDelete('cascade');
 
-            $table->primary(['user_id', 'role_id']);
+            $table->primary(['{{ $userForeignKey }}', '{{ $roleForeignKey }}']);
         });
 
         // Create table for storing permissions
@@ -47,15 +47,15 @@ class EntrustSetupTables extends Migration
 
         // Create table for associating permissions to roles (Many-to-Many)
         Schema::create('{{ $permissionRoleTable }}', function (Blueprint $table) {
-            $table->integer('permission_id')->unsigned();
-            $table->integer('role_id')->unsigned();
+            $table->integer('{{ $permissionForeignKey }}')->unsigned();
+            $table->integer('{{ $roleForeignKey }}')->unsigned();
 
-            $table->foreign('permission_id')->references('id')->on('{{ $permissionsTable }}')
+            $table->foreign('{{ $permissionForeignKey }}')->references('id')->on('{{ $permissionsTable }}')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('role_id')->references('id')->on('{{ $rolesTable }}')
+            $table->foreign('{{ $roleForeignKey }}')->references('id')->on('{{ $rolesTable }}')
                 ->onUpdate('cascade')->onDelete('cascade');
 
-            $table->primary(['permission_id', 'role_id']);
+            $table->primary(['{{ $permissionForeignKey }}', '{{ $roleForeignKey }}']);
         });
 
         DB::commit();
