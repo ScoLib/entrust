@@ -21,22 +21,29 @@ trait EntrustPermissionTrait
      */
     public function roles()
     {
-        return $this->belongsToMany(Config::get('entrust.role'), Config::get('entrust.permission_role_table'), Config::get('entrust.permission_foreign_key'), Config::get('entrust.role_foreign_key'));
+        return $this->belongsToMany(
+            Config::get('entrust.role'),
+            Config::get('entrust.permission_role_table'),
+            Config::get('entrust.permission_foreign_key'),
+            Config::get('entrust.role_foreign_key')
+        );
     }
 
     /**
      * Boot the permission model
-     * Attach event listener to remove the many-to-many records when trying to delete
-     * Will NOT delete any records if the permission model uses soft deletes.
+     * Attach event listener to remove the many-to-many records when trying to
+     * delete Will NOT delete any records if the permission model uses soft
+     * deletes.
      *
      * @return void|bool
      */
-    public static function boot()
+    public static function bootEntrustPermissionTrait()
     {
-        parent::boot();
-
         static::deleting(function ($permission) {
-            if (!method_exists(Config::get('entrust.permission'), 'bootSoftDeletes')) {
+            if (!method_exists(
+                Config::get('entrust.permission'),
+                'bootSoftDeletes'
+            )) {
                 $permission->roles()->sync([]);
             }
 

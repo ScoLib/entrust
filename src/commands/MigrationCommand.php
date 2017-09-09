@@ -11,7 +11,7 @@ namespace Zizaco\Entrust;
  */
 
 use Illuminate\Console\Command;
-use Config;
+use Illuminate\Support\Facades\Config;
 
 class MigrationCommand extends Command
 {
@@ -75,7 +75,10 @@ class MigrationCommand extends Command
     /**
      * Create the migration.
      *
-     * @param string $name
+     * @param string $rolesTable
+     * @param string $roleUserTable
+     * @param string $permissionsTable
+     * @param string $permissionRoleTable
      *
      * @return bool
      */
@@ -84,8 +87,7 @@ class MigrationCommand extends Command
         $roleUserTable,
         $permissionsTable,
         $permissionRoleTable
-    )
-    {
+    ) {
         $migrationFile = base_path('/database/migrations').'/'.date('Y_m_d_His').'_entrust_setup_tables.php';
 
         $userModelName = Config::get('auth.providers.users.model');
@@ -96,7 +98,6 @@ class MigrationCommand extends Command
         $roleForeignKey = Config::get('entrust.role_foreign_key');
         $userForeignKey = Config::get('entrust.user_foreign_key');
         $permissionForeignKey = Config::get('entrust.permission_foreign_key');
-
 
         $data = compact(
             'rolesTable', 'roleUserTable', 'permissionsTable',
