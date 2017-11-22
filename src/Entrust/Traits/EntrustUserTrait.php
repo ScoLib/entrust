@@ -17,7 +17,11 @@ use InvalidArgumentException;
 
 trait EntrustUserTrait
 {
-    //Big block of caching functionality.
+    /**
+     * Big block of caching functionality.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public function cachedRoles()
     {
         $userPrimaryKey = $this->primaryKey;
@@ -191,6 +195,7 @@ trait EntrustUserTrait
      *                                  (boolean|array|both)
      *
      * @throws \InvalidArgumentException
+     *
      * @return array|bool
      */
     public function ability($roles, $permissions, $options = [])
@@ -338,10 +343,10 @@ trait EntrustUserTrait
     }
 
     /**
-     * Filtering users according to their role
+     * Filtering users according to their role.
      *
      * @param \Illuminate\Database\Query\Builder $query
-     * @param string $role
+     * @param string                             $role
      *
      * @return users collection
      */
