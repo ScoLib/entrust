@@ -260,14 +260,14 @@ trait EntrustUserTrait
         } elseif ($options['return_type'] == 'array') {
             return [
                 'roles'       => $checkedRoles,
-                'permissions' => $checkedPermissions
+                'permissions' => $checkedPermissions,
             ];
         } else {
             return [
                 $validateAll,
                 [
                     'roles'       => $checkedRoles,
-                    'permissions' => $checkedPermissions
+                    'permissions' => $checkedPermissions,
                 ],
             ];
         }
@@ -336,4 +336,20 @@ trait EntrustUserTrait
             $this->detachRole($role);
         }
     }
+
+    /**
+     * Filtering users according to their role
+     *
+     * @param \Illuminate\Database\Query\Builder $query
+     * @param string $role
+     *
+     * @return users collection
+     */
+    public function scopeWithRole($query, $role)
+    {
+        return $query->whereHas('roles', function ($query) use ($role) {
+            $query->where('name', $role);
+        });
+    }
+
 }

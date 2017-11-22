@@ -158,7 +158,7 @@ class User extends Eloquent
 }
 ```
 
-This will enable the relation with `Role` and add the following methods `roles()`, `hasRole($name)`, `can($permission)`, and `ability($roles, $permissions, $options)` within your `User` model.
+This will enable the relation with `Role` and add the following methods `roles()`, `hasRole($name)`, `withRole($name)`, `can($permission)`, and `ability($roles, $permissions, $options)` within your `User` model.
 
 Don't forget to dump composer autoload
 
@@ -291,6 +291,13 @@ $user->can("admin.*"); // true
 
 // match any permission about users
 $user->can("*_users"); // true
+```
+
+To filter users according a specific role, you may use withRole() scope, for example to retrieve all admins:
+```
+$admins = User::withRole('admin')->get();
+// or maybe with a relationsship
+$company->users()->withRole('admin')->get();
 ```
 
 
@@ -513,6 +520,14 @@ then probably you don't have published Entrust assets or something went wrong wh
 First of all check that you have the `entrust.php` file in your `config` directory.
 If you don't, then try `php artisan vendor:publish` and, if it does not appear, manually copy the `/vendor/zizaco/entrust/src/config/config.php` file in your config directory and rename it `entrust.php`.
 
+If your app uses a custom namespace then you'll need to tell entrust where your `permission` and `role` models are, you can do this by editing the config file in `config/entrust.php`
+
+```
+'role' => 'Custom\Namespace\Role'
+```
+```
+'permission' => 'Custom\Namespace\permission'
+```
 ## License
 
 Entrust is free software distributed under the terms of the MIT license.
